@@ -32,13 +32,13 @@ def createapp(name):
         f.write("import views\n");
     
 @manager.command
-def uploadStudents(name):
+def uploadStudents(name, paper):
     from attendance.students.models import *
     f = open('../students.csv');
-    b,a =  Batch.objects.get_or_create(program=name)
+    b,a =  Batch.objects.get_or_create(program=name, paper=paper)
     for ff in f.readlines():
-        roll,name = ff.split(',')
-        s = Student(roll_no = roll, name = name, batch_id = b.batch_id)
+        t,roll,name = ff.split(',')
+        s = Student(tut_group = t, roll_no = roll, name = name, batch_id = b.batch_id)
         s.save()
     
 
