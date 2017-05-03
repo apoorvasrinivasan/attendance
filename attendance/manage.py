@@ -30,16 +30,22 @@ def createapp(name):
         x = "%s=Blueprint('%s', __name__)\n"%(name,name)
         f.write(x);
         f.write("import views\n");
-    
+import datetime
 @manager.command
 def uploadStudents(name, paper):
     from attendance.students.models import *
     f = open('../students.csv');
-    b,a =  Batch.objects.get_or_create(program=name, paper=paper)
+    b,a =  Batch.objects.get_or_create(program=name)
+    s = Semester(name = 4, start_date = datetime.datetime(2015,11,1))
+    p = Paper(name = paper, batch = b, semester = s)
+    p.save() 
     for ff in f.readlines():
         t,roll,name = ff.split(',')
-        s = Student(tut_group = t, roll_no = roll, name = name, batch_id = b.batch_id)
+        sp = StudentPaper(paper_id = p.paper_id,tut_group = t)
+        s = Student(roll_no = roll, name = name, batch_id = b.batch_id)
+        s.papers.append(sp)
         s.save()
+
     
 
 if __name__ == "__main__":

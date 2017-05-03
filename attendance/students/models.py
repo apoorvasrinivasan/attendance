@@ -58,7 +58,7 @@ class Semester(db.EmbeddedDocument):
         return self.name
 
 class Paper(db.Document):
-    paper_id = db.IntField(required=True, unique=True)
+    paper_id = db.SequenceField(required=True, unique=True)
     name = db.StringField(max_length = 255)
     batch = db.ReferenceField(Batch, required = True)
     semester = db.EmbeddedDocumentField(Semester)
