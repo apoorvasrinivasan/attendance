@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, abort, request
-from .models import Batch, Student
+from .models import Batch, Student, Paper
 from attendance import utils
 students = Blueprint('students', __name__,
                         template_folder='templates')
@@ -20,6 +20,17 @@ def batches(bid=None):
     if detailed:
         return utils.response([b.to_dict(True) for b in Batch.objects.all()])
     return Batch.objects.all().to_json()
+
+@students.route('/paper', methods=['GET'])
+@students.route('/paper/<pid>', methods=['GET'])
+def papers(pid=None):
+    if pid:
+        p = Paper.objects.get(paper_id=pid)
+        return p.to_json()
+    detailed = request.args.get('detailed')
+    if detailed:
+        return utils.response([p.to_dict(True) for p in Paper.objects.all()])
+    return Paper.objects.all().to_json()
 
 @students.route('/student', methods=['GET'])
 @students.route('/student/<roll>', methods=['GET'])

@@ -35,7 +35,7 @@ class Batch(db.Document):
     def students(self):
       return Student.objects.filter(batch_id = self.batch_id)      
     def __str__(self):
-        return "%s (%s)" % (self.program, self.batch)
+        return "%s (%s)" % (self.program, self.course)
  
     def to_dict(self, full=False):
       keys = ['batch_id','program','course','section']
@@ -104,4 +104,5 @@ class BatchView(ModelView):
     }
 admin.add_view(BatchView(Batch))
 admin.add_view(ModelView(Student))
+admin.add_view(ModelView(Paper))
 admin.add_view(ModelView(Attendance))
